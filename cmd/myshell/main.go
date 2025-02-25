@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 )
 
@@ -14,21 +15,10 @@ func type_cmd(command string) {
 		fmt.Println("echo is a shell builtin")
 	} else if command == "exit" {
 		fmt.Println("exit is a shell builtin")
+	} else if path, err := exec.LookPath(command); err == nil {
+		fmt.Printf("%s is %s\n", command, path)
 	} else {
-		path := os.Getenv("PATH")
-		fmt.Println(path)
-		pathArray := strings.Split(path, ":")
-		var found bool = false
-		for _, p := range pathArray {
-			if strings.Contains(p, command) {
-				fmt.Println(command + " is " + p)
-				found = true
-				break
-			}
-		}
-		if !found {
-			fmt.Println(command + ": not found")
-		}
+		fmt.Println(command + ": not found")
 	}
 }
 
