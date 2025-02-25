@@ -24,6 +24,14 @@ func type_cmd(command string) {
 	}
 }
 
+func handleFileExecution(command string, args []string) {
+	cmd := exec.Command(command, args...)
+	err := cmd.Run()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Error executing command: ", err)
+	}
+}
+
 func main() {
 	// Uncomment this block to pass the first stage
 
@@ -46,6 +54,8 @@ func main() {
 			fmt.Println(strings.Join(params[1:], " "))
 		case "exit":
 			os.Exit(0)
+		case "custom_exe_1234":
+			handleFileExecution(params[0], params[1:])
 		default:
 			fmt.Println(command + ": command not found")
 		}
