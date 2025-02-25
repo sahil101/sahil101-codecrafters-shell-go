@@ -40,7 +40,7 @@ func handleFileExecution(command string, args []string) {
 		return
 	}
 	// Print the output
-	fmt.Println(outBuffer.String())
+	fmt.Print(outBuffer.String())
 }
 
 func main() {
