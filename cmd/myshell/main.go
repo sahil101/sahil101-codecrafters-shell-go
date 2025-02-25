@@ -16,6 +16,7 @@ func type_cmd(command string) {
 		fmt.Println("exit is a shell builtin")
 	} else {
 		path := os.Getenv("PATH")
+		fmt.Println(path)
 		pathArray := strings.Split(path, ":")
 		var found bool = false
 		for _, p := range pathArray {
