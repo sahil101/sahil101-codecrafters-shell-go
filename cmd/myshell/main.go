@@ -25,7 +25,7 @@ func type_cmd(command string) {
 }
 
 func handleFileExecution(command string, args []string) {
-	output, err := exec.Command(command, args...).Output()
+	output, err := exec.Command(command, args...).CombinedOutput()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, "Error executing command: ", err)
 	}
