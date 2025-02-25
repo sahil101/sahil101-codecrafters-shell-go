@@ -47,16 +47,15 @@ func main() {
 			os.Exit(1)
 		}
 
-		switch params[0] {
-		case "type":
-			type_cmd(params[1])
-		case "echo":
+		if params[0] == "echo" {
 			fmt.Println(strings.Join(params[1:], " "))
-		case "exit":
+		} else if params[0] == "type" {
+			type_cmd(params[1])
+		} else if params[0] == "exit" {
 			os.Exit(0)
-		case "custom_exe_1234":
+		} else if _, err := exec.LookPath(params[0]); err == nil {
 			handleFileExecution(params[0], params[1:])
-		default:
+		} else {
 			fmt.Println(command + ": command not found")
 		}
 
