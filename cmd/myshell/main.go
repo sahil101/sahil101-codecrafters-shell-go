@@ -7,8 +7,29 @@ import (
 	"strings"
 )
 
-// Ensures gofmt doesn't remove the "fmt" import in stage 1 (feel free to remove this!)
-var _ = fmt.Fprint
+// handles the type command
+func type_cmd(command string) {
+
+	if command == "echo" {
+		fmt.Println("echo is a shell builtin")
+	} else if command == "exit" {
+		fmt.Println("exit is a shell builtin")
+	} else {
+		path := os.Getenv("PATH")
+		pathArray := strings.Split(path, ":")
+		var found bool = false
+		for _, p := range pathArray {
+			if strings.Contains(p, command) {
+				fmt.Println(command + " is " + p)
+				found = true
+				break
+			}
+		}
+		if !found {
+			fmt.Println(command + ": not found")
+		}
+	}
+}
 
 func main() {
 	// Uncomment this block to pass the first stage
@@ -27,16 +48,7 @@ func main() {
 
 		switch params[0] {
 		case "type":
-			switch params[1] {
-			case "echo":
-				fmt.Println("echo is a shell builtin")
-			case "exit":
-				fmt.Println("exit is a shell builtin")
-			case "type":
-				fmt.Println("type is a shell builtin")
-			default:
-				fmt.Println(params[1] + ": not found")
-			}
+			type_cmd(params[1])
 		case "echo":
 			fmt.Println(strings.Join(params[1:], " "))
 		case "exit":
