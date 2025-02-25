@@ -64,6 +64,10 @@ func main() {
 			type_cmd(params[1])
 		} else if params[0] == "exit" {
 			os.Exit(0)
+		} else if params[0] == "pwd" {
+			pwd, _ := os.Getwd()
+			fmt.Println(pwd)
+			continue
 		} else if _, err := exec.LookPath(params[0]); err == nil {
 			handleFileExecution(params[0], params[1:])
 		} else {
