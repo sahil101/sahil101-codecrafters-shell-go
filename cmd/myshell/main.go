@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
 	"os"
 	"os/exec"
@@ -25,11 +26,21 @@ func type_cmd(command string) {
 }
 
 func handleFileExecution(command string, args []string) {
-	output, err := exec.Command(command, args...).CombinedOutput()
+	cmd := exec.Command(command, args...)
+
+	// Create buffers to capture standard output and error
+	var outBuffer, errBuffer bytes.Buffer
+	cmd.Stdout = &outBuffer
+	cmd.Stderr = &errBuffer
+
+	err := cmd.Run()
 	if err != nil {
-		fmt.Fprintln(os.Stderr, "Error executing command: ", err)
+		fmt.Println("Error executing command:", err)
+		fmt.Println("Stderr:", errBuffer.String())
+		return
 	}
-	fmt.Println(output)
+	// Print the output
+	fmt.Println(outBuffer.String())
 }
 
 func main() {
