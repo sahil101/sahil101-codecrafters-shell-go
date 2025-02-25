@@ -9,7 +9,7 @@ import (
 )
 
 func isShellBuiltIn(cmd string) bool {
-	return cmd == "echo" || cmd == "exit"
+	return cmd == "echo" || cmd == "exit" || cmd == "type"
 }
 
 // handles the type command
