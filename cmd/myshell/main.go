@@ -8,13 +8,15 @@ import (
 	"strings"
 )
 
+func isShellBuiltIn(cmd string) bool {
+	return cmd == "echo" || cmd == "exit"
+}
+
 // handles the type command
 func type_cmd(command string) {
 
-	if command == "echo" {
-		fmt.Println("echo is a shell builtin")
-	} else if command == "exit" {
-		fmt.Println("exit is a shell builtin")
+	if isShellBuiltIn(command) {
+		fmt.Printf("%s is a shell builtin\n", command)
 	} else if path, err := exec.LookPath(command); err == nil {
 		fmt.Printf("%s is %s\n", command, path)
 	} else {
