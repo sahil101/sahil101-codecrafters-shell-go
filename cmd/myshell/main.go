@@ -82,6 +82,21 @@ func inputParser(s *string) []string {
 	return params
 }
 
+func handleEcho(args []string) error {
+	if len(args) == 0 {
+		fmt.Fprintln(os.Stdout)
+		return nil
+	}
+
+	for i := 0; i < len(args)-1; i++ {
+		fmt.Fprintf(os.Stdout, "%s ", args[i])
+	}
+
+	fmt.Fprintln(os.Stdout, args[len(args)-1])
+	return nil
+
+}
+
 func main() {
 	// Uncomment this block to pass the first stage
 
@@ -99,10 +114,10 @@ func main() {
 		}
 
 		if params[0] == "echo" {
-			fmt.Println(strings.Join(params[1:], " "))
+			handleEcho(params[1:])
 		} else if params[0] == "type" {
 			type_cmd(params[1])
-		} else if params[0] == "exit" {
+		} else if params[0] == "exit" { // revisit this
 			os.Exit(0)
 		} else if params[0] == "pwd" {
 			pwd := getAbsolutePath()
