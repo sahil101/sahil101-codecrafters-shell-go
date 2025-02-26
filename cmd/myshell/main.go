@@ -73,7 +73,7 @@ func inputParser(input string) []string {
 			params = append(params, strings.Fields(s)...)
 			break
 		}
-		params = append(params, strings.Fields((s)[:start])...)
+		params = append(params, strings.Fields(s[:start])...)
 		s = s[start+1:]
 		end := strings.Index(s, "'")
 		param := s[:end]
