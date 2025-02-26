@@ -104,7 +104,7 @@ func main() {
 		fmt.Fprint(os.Stdout, "$ ")
 		// Wait for user input
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		s := strings.Trim(command, "\n\r")
+		s := strings.Trim(command, "\r\n")
 
 		params := inputParser(&s)
 
