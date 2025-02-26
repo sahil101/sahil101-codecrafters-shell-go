@@ -9,8 +9,10 @@ import (
 	"strings"
 )
 
+// var BUILTIN_COMMANDS = [4]string{"echo", "exit", "type", "pwd", "cd"}
+
 func isShellBuiltIn(cmd string) bool {
-	return cmd == "echo" || cmd == "exit" || cmd == "type" || cmd == "pwd"
+	return cmd == "echo" || cmd == "exit" || cmd == "type" || cmd == "pwd" || cmd == "cd"
 }
 
 // handles the type command
@@ -43,6 +45,19 @@ func handleFileExecution(command string, args []string) {
 	fmt.Print(outBuffer.String())
 }
 
+func getAbsolutePath() string {
+	pwd, _ := os.Getwd()
+	return pwd
+}
+
+func handleChangeDirectory(path string) {
+	err := os.Chdir(path)
+	if err != nil {
+		fmt.Printf("cd: %s: No such file or directory\n", path)
+		return
+	}
+}
+
 func main() {
 	// Uncomment this block to pass the first stage
 
@@ -65,9 +80,11 @@ func main() {
 		} else if params[0] == "exit" {
 			os.Exit(0)
 		} else if params[0] == "pwd" {
-			pwd, _ := os.Getwd()
+			pwd := getAbsolutePath()
 			fmt.Println(pwd)
 			continue
+		} else if params[0] == "cd" {
+			handleChangeDirectory(params[1])
 		} else if _, err := exec.LookPath(params[0]); err == nil {
 			handleFileExecution(params[0], params[1:])
 		} else {
