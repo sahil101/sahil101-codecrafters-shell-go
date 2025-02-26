@@ -64,6 +64,24 @@ func handleChangeDirectory(path string) {
 	}
 }
 
+func inputParser(s *string) []string {
+	var params []string
+	for {
+		start := strings.Index(*s, "'")
+		if start == -1 {
+			params = append(params, strings.Fields(*s)...)
+			break
+		}
+		params = append(params, strings.Fields((*s)[:start])...)
+		(*s) = (*s)[start+1:]
+		end := strings.Index(*s, "'")
+		param := (*s)[:end]
+		params = append(params, param)
+		(*s) = (*s)[end+1:]
+	}
+	return params
+}
+
 func main() {
 	// Uncomment this block to pass the first stage
 
@@ -71,8 +89,9 @@ func main() {
 		fmt.Fprint(os.Stdout, "$ ")
 		// Wait for user input
 		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		command = strings.Trim(command, "\n\r")
-		params := strings.Fields(command)
+		s := strings.Trim(command, "\n\r")
+
+		params := inputParser(&s)
 
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error reading input:", err)
