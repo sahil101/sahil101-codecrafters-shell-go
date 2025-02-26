@@ -20,7 +20,7 @@ func type_cmd(command string) {
 
 	if isShellBuiltIn(command) {
 		fmt.Printf("%s is a shell builtin\n", command)
-	} else if path, err := exec.LookPath(command); err == nil {
+	} else if path, err := exec.LookPath(command); err == nil { // can we write our own lookPath function?
 		fmt.Printf("%s is %s\n", command, path)
 	} else {
 		fmt.Println(command + ": not found")
@@ -64,20 +64,21 @@ func handleChangeDirectory(path string) {
 	}
 }
 
-func inputParser(s *string) []string {
+func inputParser(input string) []string {
+	s := strings.Trim(input, "\r\n")
 	var params []string
 	for {
-		start := strings.Index(*s, "'")
+		start := strings.Index(s, "'")
 		if start == -1 {
-			params = append(params, strings.Fields(*s)...)
+			params = append(params, strings.Fields(s)...)
 			break
 		}
-		params = append(params, strings.Fields((*s)[:start])...)
-		(*s) = (*s)[start+1:]
-		end := strings.Index(*s, "'")
-		param := (*s)[:end]
+		params = append(params, strings.Fields((s)[:start])...)
+		s = s[start+1:]
+		end := strings.Index(s, "'")
+		param := s[:end]
 		params = append(params, param)
-		(*s) = (*s)[end+1:]
+		s = s[end+1:]
 	}
 	return params
 }
@@ -103,10 +104,9 @@ func main() {
 	for {
 		fmt.Fprint(os.Stdout, "$ ")
 		// Wait for user input
-		command, err := bufio.NewReader(os.Stdin).ReadString('\n')
-		s := strings.Trim(command, "\r\n")
+		input, err := bufio.NewReader(os.Stdin).ReadString('\n')
 
-		params := inputParser(&s)
+		params := inputParser(input)
 
 		if err != nil {
 			fmt.Fprintln(os.Stderr, "Error reading input:", err)
@@ -128,7 +128,7 @@ func main() {
 		} else if _, err := exec.LookPath(params[0]); err == nil {
 			handleFileExecution(params[0], params[1:])
 		} else {
-			fmt.Println(command + ": command not found")
+			fmt.Println(strings.ToLower(params[0]) + ": command not found")
 		}
 
 	}
