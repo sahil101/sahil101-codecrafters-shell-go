@@ -51,6 +51,11 @@ func getAbsolutePath() string {
 }
 
 func handleChangeDirectory(path string) {
+
+	if path == "~" {
+		path = os.Getenv("HOME")
+	}
+
 	err := os.Chdir(path)
 
 	if err != nil {
