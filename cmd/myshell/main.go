@@ -90,7 +90,7 @@ func inputParser(input string) []string {
 				inDoubleQuote = !inDoubleQuote
 			}
 		case '\'':
-			if !inQuote && (isBackSlashed || inDoubleQuote) {
+			if !inQuote && inDoubleQuote {
 				if isBackSlashed {
 					isBackSlashed = false
 					current += string('\\')
