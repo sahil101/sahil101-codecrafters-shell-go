@@ -72,6 +72,8 @@ func inputParser(input string) []string {
 	inDoubleQuote := false
 	isBackSlashed := false
 	for i := 0; i < len(s); i++ {
+
+		fmt.Println(current, inQuote, inDoubleQuote, isBackSlashed)
 		char := s[i]
 		switch char {
 		case '\\':
@@ -109,6 +111,10 @@ func inputParser(input string) []string {
 				current += string(char)
 			}
 		default:
+			if isBackSlashed {
+				isBackSlashed = false
+				current += string('\\')
+			}
 			current += string(char)
 		}
 	}
