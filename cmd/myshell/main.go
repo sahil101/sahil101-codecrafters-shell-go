@@ -95,8 +95,6 @@ func inputParser(input string) []string {
 	if current != "" {
 		params = append(params, current)
 	}
-
-	fmt.Println(params)
 	return params
 }
 
