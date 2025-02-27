@@ -70,11 +70,15 @@ func inputParser(input string) []string {
 	var current string
 	inQuote := false
 	inDoubleQuote := false
+	// isBackSlashed := false
 	for i := 0; i < len(s); i++ {
 		char := s[i]
 
 		switch char {
 
+		// case '\\':
+		// 		if inDoubleQuote || inQuote
+		// 			current += string(char)
 		case '"':
 			// Toggle double quote
 			inDoubleQuote = !inDoubleQuote

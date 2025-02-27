@@ -1,35 +1,56 @@
-[![progress-banner](https://backend.codecrafters.io/progress/shell/f04f7ebd-6b70-42a2-8a0c-4f52fe58ac81)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
+# MyShell
 
-This is a starting point for Go solutions to the
-["Build Your Own Shell" Challenge](https://app.codecrafters.io/courses/shell/overview).
+MyShell is a simple command-line shell implemented in Go. It supports basic shell commands such as `echo`, `exit`, `type`, `pwd`, and `cd`. The shell reads user input, parses commands, and executes them accordingly.
 
-In this challenge, you'll build your own POSIX compliant shell that's capable of
-interpreting shell commands, running external programs and builtin commands like
-cd, pwd, echo and more. Along the way, you'll learn about shell command parsing,
-REPLs, builtin commands, and more.
+## Features
 
-**Note**: If you're viewing this repo on GitHub, head over to
-[codecrafters.io](https://codecrafters.io) to try the challenge.
+- **Built-in Commands**: 
+  - `echo`: Prints the provided arguments to the standard output.
+  - `exit`: Exits the shell.
+  - `type`: Displays whether the command is a built-in or its path if it's an executable.
+  - `pwd`: Prints the current working directory.
+  - `cd`: Changes the current directory.
 
-# Passing the first stage
+- **Command Execution**: Executes external commands and captures their output.
 
-The entry point for your `shell` implementation is in `cmd/myshell/main.go`.
-Study and uncomment the relevant code, and push your changes to pass the first
-stage:
+## Installation
 
-```sh
-git commit -am "pass 1st stage" # any msg
-git push origin master
+To install MyShell, clone the repository and build the project:
+
+```bash
+git clone https://github.com/sahil101/sahil101-codecrafters-shell-go.git
+cd sahil101-codecrafters-shell-go
+go build -o myshell cmd/myshell/main.go
 ```
 
-Time to move on to the next stage!
+## Usage
 
-# Stage 2 & beyond
+Run the shell by executing the following command:
 
-Note: This section is for stages 2 and beyond.
+```bash
+cd /tmp/
+./myshell
+```
 
-1. Ensure you have `go (1.19)` installed locally
-1. Run `./your_program.sh` to run your program, which is implemented in
-   `cmd/myshell/main.go`.
-1. Commit your changes and run `git push origin master` to submit your solution
-   to CodeCrafters. Test output will be streamed to your terminal.
+Once the shell is running, you can enter commands. For example:
+
+```bash
+$ echo Hello, World!
+Hello, World!
+
+$ pwd
+/Users/yourusername/Desktop
+
+$ cd /path/to/directory
+
+$ type echo
+echo is a shell builtin
+```
+
+## Contributing
+
+Contributions are welcome! Please open an issue or submit a pull request for any improvements or features you'd like to add.
+
+## License
+
+This project is licensed under the MIT License.
