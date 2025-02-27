@@ -67,18 +67,33 @@ func handleChangeDirectory(path string) {
 func inputParser(input string) []string {
 	s := strings.Trim(input, "\r\n")
 	var params []string
-	for {
-		start := strings.Index(s, "'")
-		if start == -1 {
-			params = append(params, strings.Fields(s)...)
-			break
+	var current string
+	inQuote := false
+	for i := 0; i < len(s); i++ {
+		char := s[i]
+
+		switch char {
+		case '\'':
+			// Toggle qouting mode
+			inQuote = !inQuote
+		case ' ':
+			// if outside quotes, treat as a separator
+
+			if !inQuote {
+				if current != "" {
+					params = append(params, current)
+					current = ""
+				}
+			} else {
+				current += string(char)
+			}
+		default:
+			current += string(char)
 		}
-		params = append(params, strings.Fields(s[:start])...)
-		s = s[start+1:]
-		end := strings.Index(s, "'")
-		param := s[:end]
-		params = append(params, param)
-		s = s[end+1:]
+
+		if current != "" {
+			params = append(params, current)
+		}
 	}
 	return params
 }
@@ -90,7 +105,7 @@ func handleEcho(args []string) error {
 	}
 
 	for i := 0; i < len(args)-1; i++ {
-		fmt.Fprintf(os.Stdout, "%s ", args[i])
+		fmt.Fprintf(os.Stdout, "%s", args[i])
 	}
 
 	fmt.Fprintln(os.Stdout, args[len(args)-1])
