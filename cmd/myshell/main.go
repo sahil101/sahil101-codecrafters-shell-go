@@ -69,17 +69,26 @@ func inputParser(input string) []string {
 	var params []string
 	var current string
 	inQuote := false
+	inDoubleQuote := false
 	for i := 0; i < len(s); i++ {
 		char := s[i]
 
 		switch char {
+
+		case '"':
+			// Toggle double quote
+			inDoubleQuote = !inDoubleQuote
 		case '\'':
-			// Toggle qouting mode
-			inQuote = !inQuote
+			if inDoubleQuote {
+				current += string(char)
+			} else {
+				// Toggle qouting mode
+				inQuote = !inQuote
+			}
 		case ' ':
 			// if outside quotes, treat as a separator
 
-			if !inQuote {
+			if !inQuote && !inDoubleQuote {
 				if current != "" {
 					params = append(params, current)
 					current = ""
