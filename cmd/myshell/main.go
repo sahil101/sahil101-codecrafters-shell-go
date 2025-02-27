@@ -90,11 +90,13 @@ func inputParser(input string) []string {
 		default:
 			current += string(char)
 		}
-
-		if current != "" {
-			params = append(params, current)
-		}
 	}
+
+	if current != "" {
+		params = append(params, current)
+	}
+
+	fmt.Println(params)
 	return params
 }
 
@@ -105,7 +107,7 @@ func handleEcho(args []string) error {
 	}
 
 	for i := 0; i < len(args)-1; i++ {
-		fmt.Fprintf(os.Stdout, "%s", args[i])
+		fmt.Fprintf(os.Stdout, "%s ", args[i])
 	}
 
 	fmt.Fprintln(os.Stdout, args[len(args)-1])
