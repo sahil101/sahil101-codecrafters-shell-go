@@ -92,6 +92,8 @@ func inputParser(input string) []string {
 			if !inQuote && (isBackSlashed || inDoubleQuote) {
 				current += string(char)
 				isBackSlashed = false
+			} else if inDoubleQuote {
+				current += string(char)
 			} else {
 				// Toggle qouting mode
 				inQuote = !inQuote
