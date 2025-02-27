@@ -91,8 +91,11 @@ func inputParser(input string) []string {
 			}
 		case '\'':
 			if !inQuote && (isBackSlashed || inDoubleQuote) {
+				if isBackSlashed {
+					isBackSlashed = false
+					current += string('\\')
+				}
 				current += string(char)
-				isBackSlashed = false
 			} else {
 				// Toggle qouting mode
 				inQuote = !inQuote
