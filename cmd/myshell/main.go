@@ -83,7 +83,7 @@ func inputParser(input string) []string {
 				current += string(char)
 			}
 		case '"':
-			if !inDoubleQuote && isBackSlashed {
+			if !inDoubleQuote && (isBackSlashed || inQuote) {
 				current += string(char)
 				isBackSlashed = false
 			} else {
