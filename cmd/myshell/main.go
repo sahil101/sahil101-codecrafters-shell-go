@@ -70,20 +70,30 @@ func inputParser(input string) []string {
 	var current string
 	inQuote := false
 	inDoubleQuote := false
-	// isBackSlashed := false
+	isBackSlashed := false
 	for i := 0; i < len(s); i++ {
 		char := s[i]
 
 		switch char {
 
-		// case '\\':
-		// 		if inDoubleQuote || inQuote
-		// 			current += string(char)
+		case '\\':
+			if !inDoubleQuote && !inQuote {
+				isBackSlashed = true
+			} else {
+				current += string(char)
+			}
 		case '"':
-			// Toggle double quote
-			inDoubleQuote = !inDoubleQuote
+			if !inDoubleQuote && isBackSlashed {
+				current += string(char)
+				isBackSlashed = false
+			} else {
+				// Toggle double quote
+				inDoubleQuote = !inDoubleQuote
+			}
 		case '\'':
-			if inDoubleQuote {
+			if !inQuote && isBackSlashed {
+				current += string(char)
+			} else if inDoubleQuote {
 				current += string(char)
 			} else {
 				// Toggle qouting mode
@@ -92,7 +102,7 @@ func inputParser(input string) []string {
 		case ' ':
 			// if outside quotes, treat as a separator
 
-			if !inQuote && !inDoubleQuote {
+			if !inQuote && !inDoubleQuote && !isBackSlashed {
 				if current != "" {
 					params = append(params, current)
 					current = ""
