@@ -67,7 +67,7 @@ func handleChangeDirectory(path string) {
 func inputParser(input string) []string {
 	s := strings.Trim(input, "\r\n")
 	var params []string
-	var current string
+	var current strings.Builder
 	inQuote := false
 	inDoubleQuote := false
 	isBackSlashed := false
@@ -75,48 +75,41 @@ func inputParser(input string) []string {
 		char := s[i]
 
 		if char == '.' {
-			current += string(char)
+			current.WriteByte(char)
 			continue
 		}
 
-		// fmt.Println(isBackSlashed, inDoubleQuote, inQuote, current, string(char))
 		switch char {
 
 		case '\\':
 			if !inQuote && !isBackSlashed {
 				isBackSlashed = true
 			} else {
-				current += string(char)
+				current.WriteByte(char)
 				isBackSlashed = false
 			}
 		case '"':
-			if !inDoubleQuote && (isBackSlashed || inQuote) {
-				current += string(char)
+			if isBackSlashed || inQuote {
+				current.WriteByte(char)
 				isBackSlashed = false
 			} else {
-				// Toggle double quote
-				if isBackSlashed {
-					isBackSlashed = false
-					current += string(char)
-				} else {
-					inDoubleQuote = !inDoubleQuote
-				}
+				inDoubleQuote = !inDoubleQuote
 			}
 		case '$' | '\n':
 			if inDoubleQuote && isBackSlashed {
-				current += string(char)
+				current.WriteByte(char)
 				isBackSlashed = false
 			}
 		case '\'':
 			if !inQuote && !inDoubleQuote && isBackSlashed {
-				current += string(char)
+				current.WriteByte(char)
 				isBackSlashed = false
 			} else if inDoubleQuote {
 				if isBackSlashed {
-					current += string('\\')
+					current.WriteByte('\\')
 					isBackSlashed = false
 				}
-				current += string(char)
+				current.WriteByte(char)
 			} else {
 				// Toggle qouting mode
 				inQuote = !inQuote
@@ -125,25 +118,25 @@ func inputParser(input string) []string {
 			// if outside quotes, treat as a separator
 
 			if !inQuote && !inDoubleQuote && !isBackSlashed {
-				if current != "" {
-					params = append(params, current)
-					current = ""
+				if current.Len() > 0 {
+					params = append(params, current.String())
+					current.Reset()
 				}
 			} else {
-				current += string(char)
+				current.WriteByte(char)
 				isBackSlashed = false
 			}
 		default:
 			if isBackSlashed && inDoubleQuote {
-				current += string('\\')
+				current.WriteByte('\\')
 				isBackSlashed = false
 			}
-			current += string(char)
+			current.WriteByte(char)
 		}
 	}
 
-	if current != "" {
-		params = append(params, current)
+	if current.Len() > 0 {
+		params = append(params, current.String())
 	}
 	return params
 }
