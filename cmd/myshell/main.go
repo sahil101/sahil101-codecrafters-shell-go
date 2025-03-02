@@ -92,8 +92,9 @@ func inputParser(input string) []string {
 				if isBackSlashed {
 					isBackSlashed = false
 					current += string(char)
+				} else {
+					inDoubleQuote = !inDoubleQuote
 				}
-				inDoubleQuote = !inDoubleQuote
 			}
 		case '$' | '\n':
 			if inDoubleQuote && isBackSlashed {
