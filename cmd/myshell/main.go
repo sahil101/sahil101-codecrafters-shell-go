@@ -124,6 +124,7 @@ func inputParser(input string) []string {
 				}
 			} else {
 				current += string(char)
+				isBackSlashed = false
 			}
 		default:
 			if isBackSlashed && inDoubleQuote {
