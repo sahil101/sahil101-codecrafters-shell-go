@@ -104,6 +104,7 @@ func inputParser(input string) []string {
 		case '\'':
 			if !inQuote && !inDoubleQuote && isBackSlashed {
 				current += string(char)
+				isBackSlashed = false
 			} else if inDoubleQuote {
 				if isBackSlashed {
 					current += string('\\')
