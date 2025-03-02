@@ -73,7 +73,7 @@ func inputParser(input string) []string {
 	isBackSlashed := false
 	for i := 0; i < len(s); i++ {
 		char := s[i]
-
+		// fmt.Println(isBackSlashed, inDoubleQuote, inQuote, current)
 		switch char {
 
 		case '\\':
@@ -102,9 +102,13 @@ func inputParser(input string) []string {
 				isBackSlashed = false
 			}
 		case '\'':
-			if !inQuote && isBackSlashed {
+			if !inQuote && !inDoubleQuote && isBackSlashed {
 				current += string(char)
 			} else if inDoubleQuote {
+				if isBackSlashed {
+					current += string('\\')
+					isBackSlashed = false
+				}
 				current += string(char)
 			} else {
 				// Toggle qouting mode
@@ -122,6 +126,10 @@ func inputParser(input string) []string {
 				current += string(char)
 			}
 		default:
+			if isBackSlashed && inDoubleQuote {
+				current += string('\\')
+				isBackSlashed = false
+			}
 			current += string(char)
 		}
 	}
